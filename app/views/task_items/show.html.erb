@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @task_item.title %>
+</p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @task_item.body %>
+</p>
+
+<p>
+  <strong>Due:</strong>
+  <%= @task_item.due %>
+</p>
+
+<p>
+  <strong>Task list:</strong>
+  <%= @task_item.task_list_id %>
+</p>
+
+<%= link_to 'Back', "/task_lists/#{@task_item.task_list.id}/task_items" %>

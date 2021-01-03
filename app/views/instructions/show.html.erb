@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Task list:</strong>
+  <%= @instruction.task_list_id %>
+</p>
+
+<p>
+  <strong>Patient:</strong>
+  <%= @instruction.patient_id %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @instruction.start_date %>
+</p>
+
+<%= link_to 'Edit', edit_instruction_path(@instruction) %> |
+<%= link_to 'Back', instructions_path %>

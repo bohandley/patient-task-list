@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Instruction:</strong>
+  <%= @selected_task.instruction_id %>
+</p>
+
+<p>
+  <strong>Task item:</strong>
+  <%= @selected_task.task_item_id %>
+</p>
+
+<p>
+  <strong>Is complete:</strong>
+  <%= @selected_task.is_complete %>
+</p>
+
+<p>
+  <strong>Complete date:</strong>
+  <%= @selected_task.complete_date %>
+</p>
+
+<%= link_to 'Edit', edit_selected_task_path(@selected_task) %> |
+<%= link_to 'Back', selected_tasks_path %>

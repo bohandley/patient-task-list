@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-md-8 mx-auto">
+    <%= form_with(model: instruction, local: true) do |form| %>
+      <% if instruction.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(instruction.errors.count, "error") %> prohibited this instruction from being saved:</h2>
+
+          <ul>
+            <% instruction.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <select class="form-control" id="select-task-list">
+          <option value="">Select a Task List</option>
+        <% task_lists.each do |task_list| %>
+          <option value="<%= task_list.id %>">
+            <%= task_list.name %>
+          </option>
+        <% end %>
+      </select>
+      <br>
+      <div style="height: 200px">
+        <h6 id="include-items" style="display:none;">Include Items</h6>
+        
+        <table class="table">
+          <thead></thead>
+          <tbody>
+        
+            <% task_lists.each do |task_list| %>
+              <% task_list.task_items.each do |task_item| %>
+                <tr>
+                  <div class="form-check task-list-<%= task_list.id %>" style="display:none;">
+                    <%= check_box :selected_tasks, "#{task_item.id}", { class: "form-check-input" }, true, false %>
+                    <%= form.label task_item.title, class: "form-check-label" %>
+                  </div>
+                </tr>
+              <% end %>
+            <% end %>
+
+          </tbody>
+        </table>
+
+
+        
+          
+        
+        <%= form.hidden_field :patient_id, :value => patient.id %>
+        <%= form.hidden_field :task_list_id, :value => '' %>
+
+        <div class="form-group" id="instructions-date" style="display:none;" >
+          <%= form.label :start_date %>
+          <% default = Time.now %>
+          <%= form.date_select :start_date, default: default %>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <%= form.submit button_text, :class => "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

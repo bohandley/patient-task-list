@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  instruction: one
+  task_item: one
+  is_complete: false
+  complete_date: 2021-01-02
+
+two:
+  instruction: two
+  task_item: two
+  is_complete: false
+  complete_date: 2021-01-02

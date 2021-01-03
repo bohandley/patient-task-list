@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-8 mx-auto">
+
+    <p id="notice"><%= notice %></p>
+
+    <h1><%= @task_list.name %> Items</h1>
+
+    <table class="table">
+      <thead>
+      </thead>
+
+      <tbody>
+        <% @task_items.each do |task_item| %>
+          <tr>
+            <% if task_item.archive == true %>
+              <td><i><%= task_item.title %></i></td>
+            <% else %>
+              <td><%= task_item.title %></td>
+            <% end %>
+            
+            <td><a class="task-item-edit" href="/task_lists/<%= task_item.task_list.id %>/task_items/<%= task_item.id %>/edit">edit</a></td>
+                                                
+            <% archive_item_text = task_item.archive == true ? 'unarchive' : 'archive' %>
+            <td><%= link_to archive_item_text, "/item_archive/#{task_item.id.to_s}", method: :post %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <br>
+
+    <button type="button" class="btn btn-primary" id="add-task-item" href="/task_lists/<%= @task_list.id %>/task_items/new">
+      Add Task Item                                                       
+    </button>
+    <br>
+    &larrhk;
+    <%= link_to "Task Lists", task_lists_path %>
+    <br>
+    &larrhk;
+    <%= link_to "Patients", patients_path %>
+  </div>
+</div>

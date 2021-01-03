@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-8 mx-auto">
+    <p id="notice"><%= notice %></p>
+
+    <h1>Patient List</h1>
+
+    <table class="table">
+      <thead>
+      </thead>
+
+      <tbody>
+        <% @patients.each do |patient| %>
+          <tr>
+            <td><%= patient.first_name + " " + patient.last_name %></td>
+            
+            <td><a class="patient-edit" href="/patients/<%= patient.id %>/edit">edit</a></td>
+            
+            <!-- flip text to assign or view based on whether the patient has a set of instructions created -->
+            <!-- for this exercise, we are only considering that a patient has once set of instructions -->
+            <% if patient.instructions.size == 0 %>
+              <td><a class="patient-instructions-assign" href="/patients/<%= patient.id %>/instructions/new">assign</a></td> 
+            <% else %>
+              <td><a class="patient-instructions-view" href="/patients/<%= patient.id %>/instructions/<%= patient.instructions[0].id %>">view</a></td> 
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <br>
+
+    <!-- Click button and insert patient form html into the modal -->
+    <button type="button" class="btn btn-primary" id="add-patient" href="/patients/new">
+      Add Patient
+    </button>
+    <br>
+    &larrhk;
+    <%= link_to "Task Lists", task_lists_path %>
+  </div>
+</div>

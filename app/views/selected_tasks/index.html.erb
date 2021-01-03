@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Selected Tasks</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Instruction</th>
+      <th>Task item</th>
+      <th>Is complete</th>
+      <th>Complete date</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @selected_tasks.each do |selected_task| %>
+      <tr>
+        <td><%= selected_task.instruction_id %></td>
+        <td><%= selected_task.task_item_id %></td>
+        <td><%= selected_task.is_complete %></td>
+        <td><%= selected_task.complete_date %></td>
+        <td><%= link_to 'Show', selected_task %></td>
+        <td><%= link_to 'Edit', edit_selected_task_path(selected_task) %></td>
+        <td><%= link_to 'Destroy', selected_task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Selected Task', new_selected_task_path %>
