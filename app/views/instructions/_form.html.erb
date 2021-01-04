@@ -30,7 +30,7 @@
           <tbody>
         
             <% task_lists.each do |task_list| %>
-              <% task_list.task_items.each do |task_item| %>
+              <% task_list.task_items.where("archive = ? OR archive IS NULL", "false").each do |task_item| %>
                 <tr>
                   <div class="form-check task-list-<%= task_list.id %>" style="display:none;">
                     <%= check_box :selected_tasks, "#{task_item.id}", { class: "form-check-input" }, true, false %>
@@ -42,11 +42,7 @@
 
           </tbody>
         </table>
-
-
-        
           
-        
         <%= form.hidden_field :patient_id, :value => patient.id %>
         <%= form.hidden_field :task_list_id, :value => '' %>
 

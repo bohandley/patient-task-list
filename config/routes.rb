@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 	resources :task_items
   post 'item_archive/:id' => 'task_items#archive'
   post 'list_archive/:id' => 'task_lists#archive'
+
+  get 'update_selected_task/:id' => 'instructions#update_selected_task'
   
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-10 mx-auto">
+  	<!-- list the selected tasks -->
+  	<!-- display the due date -->
+  	<!-- each has a check box which updates is_complete -->
+  	<!-- on update display completed on date -->
+  	<!-- drop down to show (reveal on carrot click) all html text from selected_task.task_item.body -->
+  	<table class="table">
+  		<thead></thead>
+  		<tbody>
+
+  			<% selected_tasks.each do | selected_task | %>
+  				<div class="card">
+  					<div class="card-header">
+							<label style="display: inline;">
+								<%= check_box_tag :selected_task, selected_task.id, selected_task.is_complete, { class: "selected-task", disabled: selected_task.is_complete} %> 
+								<%= selected_task.task_item.title %>
+							</label>
+							<% if selected_task.is_complete == true %>
+								<!-- display completed_on -->
+								<i id="task-item-due-<%= selected_task.id %>">
+									Completed: <%= selected_task.complete_date %>
+								</i>
+							<% else %>
+								<!-- display due date -->
+								<i id="task-item-due-<%= selected_task.id %>">
+									Due: <%= instruction.start_date + selected_task.task_item.due %> 
+								</i> 
+								<p id="task-due-warning" style="display: inline-block;">&#9888;</p>
+							<% end %>
+						  
+						  <button type="button" class="display-task-item-body float-right" data-toggle="collapse" data-target="#task-item-body-<%= selected_task.id %>" aria-expanded="false" aria-controls="task-item-body-<%= selected_task.id %>">&#9650;</button>
+						</div>
+					  
+					  <div class="collapse" id="task-item-body-<%= selected_task.id %>">
+						  <div class="card card-body">
+						  	<% html = selected_task.task_item.body %>
+						    <%= sanitize html %>
+						  </div>
+						</div>
+
+					  </div>
+  				</div>
+  				<br>
+	  				
+  			<% end %>
+
+  		</tbody>
+  	</table>
+  </div>
+</div>

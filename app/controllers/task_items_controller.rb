@@ -52,13 +52,14 @@ class TaskItemsController < ApplicationController
   # PATCH/PUT /task_items/1
   # PATCH/PUT /task_items/1.json
   def update
+    @task_list = @task_item.task_list
+
+    # redirect to the same task list task items
+    url = "/task_lists/#{@task_list.id}/task_items"
+
     respond_to do |format|
       if @task_item.update(task_item_params)
-        format.html { redirect_to @task_item, notice: 'Task item was successfully updated.' }
-        format.json { render :show, status: :ok, location: @task_item }
-      else
-        format.html { render :edit }
-        format.json { render json: @task_item.errors, status: :unprocessable_entity }
+        format.html { redirect_to url, notice: 'Task item was successfully updated.' }
       end
     end
   end

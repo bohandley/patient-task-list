@@ -24,12 +24,14 @@ $( document ).on('turbolinks:load', function() {
 	});
 
 	$(".patient-instructions-assign").on("click", function(e){
-		loadModalContent(e, this, addOnChangeListener)
+		loadModalContent(e, this, addAssignTaskListeners)
 	});
 
 	$(".patient-instructions-view").on("click", function(e){
-		// loadModalContent(e, this, addOnChangeListener)
+		loadModalContent(e, this, addViewTaskListListeners)
 	});
+
+
 });
 
 function loadModalTitle(title) {
@@ -55,10 +57,12 @@ function clearModalBody() {
 function loadModalContent(e, that, eventListener) {
 	e.preventDefault();
 		
+	// pass these functions in for assign and view task list for patient
+	// to add listeners for html insterted into the modal
 	var event = eventListener == null ? () => _ : eventListener;
 
 	var url = $(that).attr("href");
-	
+
 	clearModalBody();
 
 	showModal();
@@ -72,7 +76,7 @@ function loadModalContent(e, that, eventListener) {
 	  });
 }
 
-function addOnChangeListener() {
+function addAssignTaskListeners() {
 	$("#select-task-list").on("change", function(e){
 		$(".form-check").hide();
 
@@ -86,4 +90,45 @@ function addOnChangeListener() {
 
 		$("#include-items").show();
 	});
+}
+
+function addViewTaskListListeners() {
+	$(".display-task-item-body").on("click", function(e){
+		var that = $(this);
+		flipTriangle(that);
+	});
+
+	$(".selected-task").on("click", function(e){
+		var url = "/update_selected_task/" + $(this).val()
+		// update the specific selected task
+		// disable the checkbox
+		// update the completed on date
+		// if all are checked, replace the task list with a new html template congratulating completion
+		fetch(url)
+		  .then((data) => data.json())
+		  .then((json) => {
+
+		  	if (json.selected_task != null) {
+		  		var id = json.selected_task.id;
+		  		
+		  		$("#selected_task[value='" + id + "']").prop("disabled", true);
+		  		$("#task-item-due-" + id).html("<i>Completed: " + json.selected_task.complete_date + "</i>");
+		  		$("#task-due-warning").html("");
+		  	} else {
+			  	loadModalTitle(json.title);
+			  	loadModalBody(json.html_content);
+		  	}
+		  });
+	});
+}
+
+function flipTriangle(that) {
+	if (that.html() == "▼") 
+		that.html("▲");
+	else 
+		that.html("▼");
+}
+
+function updatePatientTaskList() {
+
 }

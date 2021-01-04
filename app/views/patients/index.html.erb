@@ -20,7 +20,7 @@
             <% if patient.instructions.size == 0 %>
               <td><a class="patient-instructions-assign" href="/patients/<%= patient.id %>/instructions/new">assign</a></td> 
             <% else %>
-              <td><a class="patient-instructions-view" href="/patients/<%= patient.id %>/instructions/<%= patient.instructions[0].id %>">view</a></td> 
+              <td><a class="patient-instructions-view" href="/patients/<%= patient.id %>/instructions/<%= patient.instructions[0].id %>/edit">view</a></td> 
             <% end %>
           </tr>
         <% end %>

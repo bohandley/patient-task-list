@@ -1,6 +1,6 @@
 class InstructionsController < ApplicationController
   before_action :set_instruction, only: [:show, :edit, :update, :destroy]
-  before_action :set_patient, only: [:new]
+  before_action :set_patient, only: [:new, :edit]
   # GET /instructions
   # GET /instructions.json
   def index
@@ -15,7 +15,7 @@ class InstructionsController < ApplicationController
   # GET /instructions/new
   def new
     # get tasks lists to display possible choices of task items to select
-    @task_lists = TaskList.where("archive = ? OR archive IS NULL", "true")
+    @task_lists = TaskList.where("archive = ? OR archive IS NULL", "false")
     
     @instruction = Instruction.new
 
@@ -27,6 +27,21 @@ class InstructionsController < ApplicationController
 
   # GET /instructions/1/edit
   def edit
+    @selected_tasks = @instruction.selected_tasks
+
+    if @selected_tasks.all? { |st| st.is_complete }
+      # when viewing tasks from the patient list and all tasks are complete
+      @html_content = render_to_string :partial => 'instructions/instructions_complete', :locals => { selected_tasks: @selected_tasks, instruction: @instruction, patient: @patient, button_text: nil }
+      
+      render :json => { :html_content => @html_content, title: "Congratulations!" }    
+    else
+      # displaying task items for a patient so that they may interact with them
+      @html_content = render_to_string :partial => 'instructions/patient_task_list', :locals => { selected_tasks: @selected_tasks, instruction: @instruction, patient: @patient, button_text: nil }
+
+      title = "Task List for #{@patient.first_name} #{@patient.last_name}"
+
+      render :json => { :html_content => @html_content, title: title }
+    end
   end
 
   # POST /instructions
@@ -61,6 +76,26 @@ class InstructionsController < ApplicationController
         format.html { render :edit }
         format.json { render json: @instruction.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def update_selected_task
+    # :instruction_id, :task_item_id, :is_complete, :complete_date
+    selected_task_id = params[:id]
+
+    @selected_task = SelectedTask.find(selected_task_id)
+
+    @selected_task.update(is_complete: true, complete_date: Time.now)
+    
+    # check if all task are complete, if so, send back new html
+    if @selected_task.instruction.selected_tasks.all? { |st| st.is_complete == true }
+      # return new html
+      @html_content = render_to_string :partial => 'instructions/instructions_complete', :locals => { button_text: nil }
+
+      render :json => { :html_content => @html_content, title: "Congratulations!" }
+    else
+      # return the object as json to update the modal
+      render :json => { selected_task: @selected_task }
     end
   end
 
