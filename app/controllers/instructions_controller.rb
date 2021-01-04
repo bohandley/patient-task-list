@@ -27,7 +27,11 @@ class InstructionsController < ApplicationController
 
   # GET /instructions/1/edit
   def edit
+    # sort tasks by due date
     @selected_tasks = @instruction.selected_tasks
+
+    # more preferable to use active record order, in the future add the due attr to the selected tasks
+    @selected_tasks = @selected_tasks.sort_by { |st| st.task_item.due }
 
     if @selected_tasks.all? { |st| st.is_complete }
       # when viewing tasks from the patient list and all tasks are complete

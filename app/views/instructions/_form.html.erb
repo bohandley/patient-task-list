@@ -48,7 +48,7 @@
 
         <div class="form-group" id="instructions-date" style="display:none;" >
           <%= form.label :start_date %>
-          <% default = Time.now %>
+          <% default = DateTime.now %>
           <%= form.date_select :start_date, default: default %>
         </div>
 

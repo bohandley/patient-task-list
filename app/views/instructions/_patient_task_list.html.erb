@@ -8,7 +8,7 @@
   	<table class="table">
   		<thead></thead>
   		<tbody>
-
+  			<!-- sort tasks by due date -->
   			<% selected_tasks.each do | selected_task | %>
   				<div class="card">
   					<div class="card-header">
@@ -23,10 +23,18 @@
 								</i>
 							<% else %>
 								<!-- display due date -->
+								<% due_date = instruction.start_date + selected_task.task_item.due %>
 								<i id="task-item-due-<%= selected_task.id %>">
-									Due: <%= instruction.start_date + selected_task.task_item.due %> 
+									Due: <%= due_date %> 
 								</i> 
-								<p id="task-due-warning" style="display: inline-block;">&#9888;</p>
+								
+								<% if due_date < DateTime.now %>
+										<p id="task-due-warning" style="display: inline-block;">&#9888;</p>
+								<% else %>
+										<p id="task-due-warning" style="display: inline-block;"></p>
+								<% end %>
+									
+
 							<% end %>
 						  
 						  <button type="button" class="display-task-item-body float-right" data-toggle="collapse" data-target="#task-item-body-<%= selected_task.id %>" aria-expanded="false" aria-controls="task-item-body-<%= selected_task.id %>">&#9650;</button>

@@ -1,28 +1,23 @@
+// ids for listeners
+// each clcik of and id hits a route and loads html into the modal
+const IDS = [
+	"#add-task-list",
+	"#add-task-item",
+	"#add-patient",
+	".task-list-edit",
+	".task-item-edit",
+	".patient-edit",
+];
+
 $( document ).on('turbolinks:load', function() {
-	$("#add-task-list").on("click", function(e){
-		loadModalContent(e, this)
+	// load form html into modal
+	IDS.forEach(id => {
+		$(id).on("click", function(e){
+			loadModalContent(e, this)
+		});
 	});
-
-	$("#add-task-item").on("click", function(e){
-		loadModalContent(e, this)
-	});
-
-	$("#add-patient").on("click", function(e){
-		loadModalContent(e, this)
-	});
-
-	$(".task-list-edit").on("click", function(e){
-		loadModalContent(e, this)
-	});
-
-	$(".task-item-edit").on("click", function(e){
-		loadModalContent(e, this)
-	});
-
-	$(".patient-edit").on("click", function(e){
-		loadModalContent(e, this)
-	});
-
+		
+	// load form html and add special event listeners
 	$(".patient-instructions-assign").on("click", function(e){
 		loadModalContent(e, this, addAssignTaskListeners)
 	});
@@ -31,9 +26,9 @@ $( document ).on('turbolinks:load', function() {
 		loadModalContent(e, this, addViewTaskListListeners)
 	});
 
-
 });
 
+// general modal functions
 function loadModalTitle(title) {
 	$('#app-modal-title').html(title);
 }
@@ -54,6 +49,9 @@ function clearModalBody() {
 	$('#app-modal-body').html('');
 }
 
+// ajax call to the back end
+// back end sends html
+// for some forms, add listeners after the promise returns
 function loadModalContent(e, that, eventListener) {
 	e.preventDefault();
 		
@@ -76,6 +74,10 @@ function loadModalContent(e, that, eventListener) {
 	  });
 }
 
+// caregivers assign task lists to patients
+// when a task list is selected
+// show task items for the selected list
+// show date input
 function addAssignTaskListeners() {
 	$("#select-task-list").on("change", function(e){
 		$(".form-check").hide();
@@ -108,13 +110,16 @@ function addViewTaskListListeners() {
 		  .then((data) => data.json())
 		  .then((json) => {
 
-		  	if (json.selected_task != null) {
+		  	if (json.selected_task != null) { 
+		  		// not all tasks are complete
+		  		// update the individual instruction selected task
 		  		var id = json.selected_task.id;
 		  		
 		  		$("#selected_task[value='" + id + "']").prop("disabled", true);
 		  		$("#task-item-due-" + id).html("<i>Completed: " + json.selected_task.complete_date + "</i>");
 		  		$("#task-due-warning").html("");
-		  	} else {
+		  	} else { 
+		  		// all tasks are complete, update modal
 			  	loadModalTitle(json.title);
 			  	loadModalBody(json.html_content);
 		  	}
@@ -127,8 +132,4 @@ function flipTriangle(that) {
 		that.html("▲");
 	else 
 		that.html("▼");
-}
-
-function updatePatientTaskList() {
-
 }
